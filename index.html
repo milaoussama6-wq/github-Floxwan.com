@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLOX 1 — مسح كمّي لأسواق العملات الرقمية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+
+  <div class="ticker-bar">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+
+  <header>
+    <div class="wrap nav">
+      <a href="index.html" class="logo"><span class="logo-mark"></span> FLOX 1</a>
+      <nav class="nav-links">
+        <a href="index.html" class="active">الرئيسية</a>
+        <a href="subscriptions.html" class="">الاشتراكات</a>
+        <a href="packages.html" class="">الباقات والاستثمار</a>
+        <a href="profile.html" class="">الملف الشخصي</a>
+      </nav>
+      <a href="subscriptions.html" class="nav-cta">ابدأ الآن</a>
+    </div>
+  </header>
+  <section class="hero" style="padding-top:0; padding-bottom:56px;">
+    <div class="wrap">
+
+      <div class="dash-topbar">
+        <div class="dash-greet">مرحبًا بك في <b>FLOX 1</b></div>
+        <button class="lang-switch" onclick="toggleLang()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20a15 15 0 010-20z"/></svg>
+          العربية
+        </button>
+      </div>
+
+      <div class="dash-balance-card">
+        <div class="db-label">الرصيد الإجمالي</div>
+        <div class="db-amount" id="dashBalance">$٠٫٠٠</div>
+        <div class="db-note" id="dashBalanceNote"><a href="profile.html">سجّل أو أنشئ حسابك</a> لعرض رصيدك الحقيقي ورابط إحالتك</div>
+      </div>
+
+      <div class="dash-actions">
+        <a href="#payments" class="dash-action">
+          <svg viewBox="0 0 24 24"><path d="M12 4v12M6 12l6 6 6-6"/><path d="M4 20h16"/></svg>
+          <span>إيداع</span>
+        </a>
+        <a href="#payments" class="dash-action">
+          <svg viewBox="0 0 24 24"><path d="M12 20V8M6 12l6-6 6 6"/><path d="M4 20h16"/></svg>
+          <span>سحب</span>
+        </a>
+        <a href="profile.html#referral" class="dash-action">
+          <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5c1.7.4 3 2 3 3.9 0 1.9-1.3 3.5-3 3.9"/><path d="M18 14c2.3.5 4 2.5 4 5"/></svg>
+          <span>دعوة الفريق</span>
+        </a>
+        <a href="profile.html#rewards" class="dash-action">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8.5 14.5l2 2 4-4"/></svg>
+          <span>تسجيل الدخول</span>
+        </a>
+        <a href="profile.html#rewards" class="dash-action">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 3"/></svg>
+          <span>عجلة الحظ</span>
+        </a>
+      </div>
+
+      <div class="dash-banner-wrap">
+        <button class="banner-arrow left" onclick="bannerNav(-1)">‹</button>
+        <div class="dash-banner-track" id="bannerTrack">
+          <div class="dash-banner-slide" style="background:linear-gradient(120deg,#3a2c10,#1b1408);">
+            <h4 style="color:var(--accent);">مكافأة تسجيل ١٠$</h4>
+            <p>أنشئ حسابك اليوم واحصل على ١٠$ فورًا لتجربة المسح الكمي.</p>
+          </div>
+          <div class="dash-banner-slide" style="background:linear-gradient(120deg,#123028,#08150f);">
+            <h4 style="color:var(--up);">افتح المستوى الخامس</h4>
+            <p>إيداع من ١٠٬٠٠٠$ يمنحك نسبة ربح ١٢٪ وأولوية في المسح الكمي.</p>
+          </div>
+          <div class="dash-banner-slide" style="background:linear-gradient(120deg,#2a2436,#120f18);">
+            <h4 style="color:#c9b8ff;">ادعُ صديقًا واربح دورة</h4>
+            <p>كل صديق يفعّل المستوى الأول يمنحك دورة إضافية في عجلة الحظ.</p>
+          </div>
+        </div>
+        <button class="banner-arrow right" onclick="bannerNav(1)">›</button>
+        <div class="banner-dots" id="bannerDots"></div>
+      </div>
+
+      <div class="radar-panel" style="margin-top:24px;">
+        <div class="radar-head">
+          <span>أعلى الإشارات الآن</span>
+          <span class="mono">تحديث حي</span>
+        </div>
+        <div class="radar-row">
+          <div class="radar-coin"><span class="coin-dot"></span> SOL / USDT</div>
+          <div class="score-bar"><div class="score-fill" style="width:88%"></div></div>
+        </div>
+        <div class="radar-row">
+          <div class="radar-coin"><span class="coin-dot"></span> INJ / USDT</div>
+          <div class="score-bar"><div class="score-fill" style="width:74%"></div></div>
+        </div>
+        <div class="radar-row">
+          <div class="radar-coin"><span class="coin-dot"></span> ARB / USDT</div>
+          <div class="score-bar"><div class="score-fill mid" style="width:56%"></div></div>
+        </div>
+        <div class="radar-row">
+          <div class="radar-coin"><span class="coin-dot"></span> DOGE / USDT</div>
+          <div class="score-bar"><div class="score-fill low" style="width:31%"></div></div>
+        </div>
+        <div class="radar-row">
+          <div class="radar-coin"><span class="coin-dot"></span> TIA / USDT</div>
+          <div class="score-bar"><div class="score-fill" style="width:81%"></div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="lang-toast" id="langToast">النسخة الإنجليزية قيد التطوير — العربية متاحة بالكامل الآن</div>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>ثلاث خطوات وتبدأ أرباحك بالتراكم</h2>
+        <p>لا حاجة لخبرة تداول. تودع، والذكاء الاصطناعي يتولى المسح والتنفيذ.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num mono">01</div>
+          <h3>أودع وافتح مستواك</h3>
+          <p>من ١٠ دولار وحتى ٥٠٬٠٠٠ دولار — كل نطاق إيداع يفتح مستوى بنسبة ربح مختلفة.</p>
+        </div>
+        <div class="step">
+          <div class="step-num mono">02</div>
+          <h3>الذكاء الاصطناعي يمسح</h3>
+          <p>٣ عمليات مسح كمي يوميًا، تُعاد تلقائيًا كل ٢٤ ساعة طوال بقاء إيداعك في المستوى.</p>
+        </div>
+        <div class="step">
+          <div class="step-num mono">03</div>
+          <h3>الربح يتراكم في رصيدك</h3>
+          <p>تُضاف الأرباح تلقائيًا حسب نسبة مستواك، وتظهر في ملفك الشخصي أولًا بأول.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>أدوات بُنيت لقارئ البيانات، لا للمبتدئ</h2>
+        <p>كل ما تحتاجه لتحويل فرضية إلى استراتيجية قابلة للتنفيذ.</p>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <h3>فلاتر كمية متقدمة</h3>
+          <p>RSI، MACD، انحراف السيولة، وأكثر من ٤٠ مؤشرًا قابلاً للدمج في شرط واحد.</p>
+        </div>
+        <div class="feature">
+          <h3>تنبيهات لحظية</h3>
+          <p>إشعار فوري عبر التطبيق أو تيليجرام أو webhook بمجرد تحقق الشرط.</p>
+        </div>
+        <div class="feature">
+          <h3>اختبار رجعي عميق</h3>
+          <p>جرّب النموذج على خمس سنوات من البيانات التاريخية قبل تفعيله على أموال حقيقية.</p>
+        </div>
+        <div class="feature">
+          <h3>واجهة برمجية مفتوحة</h3>
+          <p>اربط الإشارات مباشرة ببوت التداول أو نظامك الداخلي عبر REST و WebSocket.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="market">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>السوق المباشر</h2>
+        <p>اضغط على أي عمود لإعادة الترتيب.</p>
+      </div>
+      <div class="table-wrap">
+        <table id="marketTable">
+          <thead>
+            <tr>
+              <th data-key="coin">العملة</th>
+              <th data-key="price">السعر</th>
+              <th data-key="chg">تغير ٢٤س</th>
+              <th data-key="vol">حجم التداول</th>
+              <th data-key="score">نقاط الإشارة</th>
+            </tr>
+          </thead>
+          <tbody id="marketBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="payments">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>طرق الإيداع والسحب</h2>
+        <p>أودع واسحب بالطريقة التي تناسبك. كل المعاملات مشفّرة ومؤمّنة من طرف إلى طرف.</p>
+      </div>
+
+      <h3 style="font-size:15px; margin-bottom:14px; color:var(--text-muted);">الإيداع</h3>
+      <div class="table-wrap" style="margin-bottom:36px;">
+        <table>
+          <thead>
+            <tr>
+              <th>الطريقة</th>
+              <th>الحد الأدنى</th>
+              <th>الحد الأقصى</th>
+              <th>الرسوم</th>
+              <th>مدة المعالجة</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="coin-cell">تحويل بنكي (دينار جزائري)</td>
+              <td>١٠ د.ك</td>
+              <td>٥٠٬٠٠٠ د.ك</td>
+              <td>بدون رسوم</td>
+              <td>١-٢ يوم عمل</td>
+            </tr>
+            <tr>
+              <td class="coin-cell">تحويل بنكي (دولار أمريكي)</td>
+              <td>١٠ د.ك</td>
+              <td>٥٠٬٠٠٠ د.ك</td>
+              <td>بدون رسوم</td>
+              <td>١-٢ يوم عمل</td>
+            </tr>
+            <tr>
+              <td class="coin-cell">USDT (TRC20)</td>
+              <td>١٠ د.ك</td>
+              <td>بلا حد</td>
+              <td>بدون رسوم</td>
+              <td>فوري</td>
+            </tr>
+            <tr>
+              <td class="coin-cell">بطاقة ائتمان / خصم</td>
+              <td>١٠ د.ك</td>
+              <td>١٠٬٠٠٠ د.ك</td>
+              <td>١٫٥٪</td>
+              <td>فوري</td>
+            </tr>
+            <tr>
+              <td class="coin-cell">Bitcoin مباشر</td>
+              <td>١٠ د.ك</td>
+              <td>بلا حد</td>
+              <td>رسوم الشبكة فقط</td>
+              <td>١٠-٣٠ دقيقة</td>
+            </tr>
+            <tr>
+              <td class="coin-cell">Ethereum مباشر</td>
+              <td>١٠ د.ك</td>
+              <td>بلا حد</td>
+              <td>رسوم الشبكة فقط</td>
+              <td>٥-١٥ دقيقة</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="font-size:15px; margin-bottom:14px; color:var(--text-muted);">السحب</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>الطريقة</th>
+              <th>الحد الأدنى</th>
+              <th>الحد الأقصى</th>
+              <th>الرسوم</th>
+              <th>مدة المعالجة</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="coin-cell">تحويل بنكي (دينار جزائري)</td>
+              <td>٥ د.ك</td>
+              <td>٥٠٬٠٠٠ د.ك</td>
+              <td>بدون رسوم</td>
+              <td>١-٢ يوم عمل</td>
+            </tr>
+            <tr>
+              <td class="coin-cell">تحويل بنكي (دولار أمريكي)</td>
+              <td>٥ د.ك</td>
+              <td>٥٠٬٠٠٠ د.ك</td>
+              <td>٥٪</td>
+              <td>١-٢ يوم عمل</td>
+            </tr>
+            <tr>
+              <td class="coin-cell">USDT (TRC20)</td>
+              <td>٥ د.ك</td>
+              <td>بلا حد</td>
+              <td>٥٪</td>
+              <td>فوري</td>
+            </tr>
+            <tr>
+              <td class="coin-cell">بطاقة ائتمان / خصم</td>
+              <td>٥ د.ك</td>
+              <td>١٠٬٠٠٠ د.ك</td>
+              <td>٥٪</td>
+              <td>فوري</td>
+            </tr>
+            <tr>
+              <td class="coin-cell">Bitcoin مباشر</td>
+              <td>٥ د.ك</td>
+              <td>بلا حد</td>
+              <td>٥٪</td>
+              <td>١٠-٣٠ دقيقة</td>
+            </tr>
+            <tr>
+              <td class="coin-cell">Ethereum مباشر</td>
+              <td>٥ د.ك</td>
+              <td>بلا حد</td>
+              <td>٥٪</td>
+              <td>٥-١٥ دقيقة</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="note-inline">السحب يتطلب توثيق الهوية (KYC) لمرة واحدة. أول عملية سحب قد تستغرق وقتًا إضافيًا للمراجعة الأمنية.</p>
+    </div>
+  </section>
+
+  <section id="plans-teaser">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>طريقتان لاستخدام FLOX 1</h2>
+        <p>استخدم أداة المسح والتنبيهات لتقرر بنفسك، أو أودع وافتح أحد المستويات الخمسة ليعمل الذكاء الاصطناعي نيابة عنك.</p>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <h3>الاشتراكات</h3>
+          <p>وصول كامل لأدوات المسح الكمي، التنبيهات اللحظية، والاختبار الرجعي. أنت من يقرر ويُنفّذ.</p>
+          <a href="subscriptions.html" class="chan-link" style="color:var(--accent); font-weight:600; font-size:14px; display:inline-block; margin-top:6px;">عرض الاشتراكات</a>
+        </div>
+        <div class="feature">
+          <h3>الباقات والاستثمار</h3>
+          <p>٥ مستويات حسب مبلغ الإيداع، بمسح كمي ٣ مرات يوميًا وربح تراكمي كل ٢٤ ساعة.</p>
+          <a href="packages.html" class="chan-link" style="color:var(--accent); font-weight:600; font-size:14px; display:inline-block; margin-top:6px;">عرض المستويات</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="support">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>خدمة العملاء</h2>
+        <p>فريقنا متاح لمساعدتك في الإيداع والسحب وأي استفسار حول النماذج الكمية.</p>
+      </div>
+      <div class="support-grid">
+        <div class="support-card">
+          <div class="chan-status"><span class="chan-dot"></span> متاح الآن</div>
+          <h3>دردشة مباشرة</h3>
+          <p>رد فوري خلال دقائق، على مدار الساعة.</p>
+          <a href="#" class="chan-link">ابدأ محادثة</a>
+        </div>
+        <div class="support-card">
+          <div class="chan-status"><span class="chan-dot"></span> متاح الآن</div>
+          <h3>تيليجرام</h3>
+          <p>تواصل مع فريق الدعم عبر بوت تيليجرام الرسمي.</p>
+          <a href="#" class="chan-link">t.me/misbar_support</a>
+        </div>
+        <div class="support-card">
+          <div class="chan-status" style="color:var(--text-muted)"><span class="chan-dot" style="background:var(--text-muted)"></span> خلال ٢٤ ساعة</div>
+          <h3>البريد الإلكتروني</h3>
+          <p>للاستفسارات التفصيلية أو مشاكل الحسابات.</p>
+          <a href="#" class="chan-link">support@misbar.app</a>
+        </div>
+        <div class="support-card">
+          <div class="chan-status" style="color:var(--text-muted)"><span class="chan-dot" style="background:var(--text-muted)"></span> ٩ص - ١١م</div>
+          <h3>الهاتف</h3>
+          <p>دعم صوتي مباشر خلال ساعات العمل.</p>
+          <a href="#" class="chan-link">+965 XXXX XXXX</a>
+        </div>
+      </div>
+
+      <div class="faq">
+        <details class="faq-item" open>
+          <summary>كم تستغرق عملية السحب؟</summary>
+          <p class="faq-a">السحب عبر USDT أو الشبكات المباشرة يُعالج فوريًا إلى ٣٠ دقيقة. التحويل البنكي يستغرق ١-٢ يوم عمل حسب البنك المستقبل.</p>
+        </details>
+        <details class="faq-item">
+          <summary>هل التحقق من الهوية (KYC) إلزامي؟</summary>
+          <p class="faq-a">نعم، لمرة واحدة فقط قبل أول عملية سحب. الإيداع لا يتطلب توثيقًا مسبقًا لكن السحب يتطلبه حماية لحسابك.</p>
+        </details>
+        <details class="faq-item">
+          <summary>هل توجد رسوم خفية؟</summary>
+          <p class="faq-a">لا. كل الرسوم المعلنة في جدول طرق الإيداع والسحب أعلاه نهائية وواضحة، ولا توجد أي رسوم إضافية غير معلنة.</p>
+        </details>
+        <details class="faq-item">
+          <summary>ماذا لو تأخرت عملية الإيداع؟</summary>
+          <p class="faq-a">تواصل فورًا عبر الدردشة المباشرة أو تيليجرام مع رقم المعاملة (Transaction ID)، وسيتم التحقق خلال دقائق.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <div class="wrap">
+      <h2>ابدأ بمسح السوق خلال دقيقتين</h2>
+      <p>بلا بطاقة ائتمان. أوقف حسابك في أي وقت.</p>
+      <a href="subscriptions.html" class="btn-primary">أنشئ حسابك</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="logo"><span class="logo-mark"></span> FLOX 1</div>
+        <div class="footer-cols">
+          <div class="footer-col">
+            <h4>المنتج</h4>
+            <a href="index.html#features">المميزات</a>
+            <a href="index.html#market">السوق المباشر</a>
+            <a href="subscriptions.html">الاشتراكات</a>
+            <a href="packages.html">الباقات والاستثمار</a>
+          </div>
+          <div class="footer-col">
+            <h4>الحساب</h4>
+            <a href="profile.html">الملف الشخصي</a>
+            <a href="index.html#payments">الإيداع والسحب</a>
+            <a href="index.html#support">الدعم</a>
+          </div>
+          <div class="footer-col">
+            <h4>قانوني</h4>
+            <a href="#">الشروط والأحكام</a>
+            <a href="#">سياسة الخصوصية</a>
+          </div>
+        </div>
+      </div>
+      <p class="disclaimer">تداول العملات الرقمية والاستثمار فيها ينطويان على مخاطر عالية وقد يؤديان إلى خسارة رأس المال بالكامل. الإشارات والباقات والنماذج المعروضة في FLOX 1 لأغراض تعليمية وتحليلية فقط، ولا تُعد نصيحة استثمارية أو توصية بالشراء أو البيع. الأداء السابق لأي نموذج أو باقة لا يضمن نتائج مماثلة في المستقبل.</p>
+      <p class="footer-bottom">© 2026 FLOX 1. جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
+
+<script src="ticker.js"></script>
+<script>
+  // Market table
+  const marketData = [
+    {coin:'Bitcoin', sym:'BTC', price:67210, chg:1.8, vol:'٢٫١ مليار', score:62},
+    {coin:'Ethereum', sym:'ETH', price:3485, chg:0.9, vol:'١٫٤ مليار', score:58},
+    {coin:'Solana', sym:'SOL', price:189.40, chg:5.2, vol:'٩١٠ مليون', score:88},
+    {coin:'Injective', sym:'INJ', price:24.15, chg:3.1, vol:'٢١٠ مليون', score:74},
+    {coin:'Arbitrum', sym:'ARB', price:1.02, chg:-1.4, vol:'١٧٠ مليون', score:39},
+    {coin:'Celestia', sym:'TIA', price:8.77, chg:6.4, vol:'١٤٠ مليون', score:81},
+    {coin:'Dogecoin', sym:'DOGE', price:0.168, chg:-0.6, vol:'٣٨٠ مليون', score:29},
+    {coin:'Sui', sym:'SUI', price:1.47, chg:4.0, vol:'٢٠٠ مليون', score:69},
+  ];
+  let sortState = {key:'score', dir:-1};
+  function fmtPrice(n){
+    return n >= 1000 ? n.toLocaleString('en-US') : n.toString();
+  }
+  function renderTable(){
+    const body = document.getElementById('marketBody');
+    const rows = [...marketData];
+    rows.sort((a,b)=>{
+      const k = sortState.key;
+      let av = a[k], bv = b[k];
+      if (k === 'coin'){ av = a.sym; bv = b.sym; }
+      if (typeof av === 'string') return sortState.dir * av.localeCompare(bv);
+      return sortState.dir * (av - bv);
+    });
+    body.innerHTML = rows.map(r => `
+      <tr>
+        <td class="coin-cell">${r.coin} <span style="color:var(--text-muted)">${r.sym}</span></td>
+        <td>$${fmtPrice(r.price)}</td>
+        <td class="chg ${r.chg>=0?'up':'down'}">${r.chg>=0?'+':''}${r.chg}%</td>
+        <td>${r.vol}</td>
+        <td>
+          <div class="sig-cell">
+            <div class="score-bar"><div class="score-fill ${r.score>=70?'':r.score>=45?'mid':'low'}" style="width:${r.score}%"></div></div>
+            <span>${r.score}</span>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+  document.querySelectorAll('#marketTable thead th').forEach(th=>{
+    th.addEventListener('click', ()=>{
+      const key = th.dataset.key;
+      sortState.dir = (sortState.key === key) ? sortState.dir * -1 : -1;
+      sortState.key = key;
+      renderTable();
+    });
+  });
+  renderTable();
+
+  const arabicDigits = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  function toArabicNum(str){
+    return String(str).replace(/[0-9]/g, d => arabicDigits[d]);
+  }
+
+  // Language switch (Arabic is fully live; other languages are placeholders for now)
+  let langToastTimer = null;
+  function toggleLang(){
+    const toast = document.getElementById('langToast');
+    toast.classList.add('show');
+    clearTimeout(langToastTimer);
+    langToastTimer = setTimeout(()=> toast.classList.remove('show'), 2600);
+  }
+
+  // Promo banner carousel
+  let bannerIndex = 0;
+  const bannerSlideCount = document.querySelectorAll('.dash-banner-slide').length;
+  function renderBannerDots(){
+    const dotsWrap = document.getElementById('bannerDots');
+    dotsWrap.innerHTML = Array.from({length: bannerSlideCount}).map((_, i) =>
+      `<span class="banner-dot ${i===bannerIndex?'active':''}"></span>`
+    ).join('');
+  }
+  function bannerNav(dir){
+    bannerIndex = (bannerIndex + dir + bannerSlideCount) % bannerSlideCount;
+    document.getElementById('bannerTrack').style.transform = `translateX(${bannerIndex*100}%)`;
+    renderBannerDots();
+  }
+  renderBannerDots();
+  setInterval(()=> bannerNav(1), 5000);
+
+  // Show real balance on the dashboard if the visitor already has an account
+  (async function loadDashBalance(){
+    try{
+      const res = await window.storage.get('profile', false);
+      if(res){
+        const profile = JSON.parse(res.value);
+        document.getElementById('dashBalance').textContent = '$' + toArabicNum((Math.round((profile.bonusBalance||0)*100)/100).toString());
+        document.getElementById('dashBalanceNote').innerHTML = `مرحبًا ${profile.name.split(' ')[0]} — <a href="profile.html">افتح ملفك الشخصي</a>`;
+      }
+    }catch(e){ /* no account yet on this browser — keep default prompt */ }
+  })();
+</script>
+</body>
+</html>

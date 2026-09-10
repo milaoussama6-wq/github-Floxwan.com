@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الاشتراكات — FLOX 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="ticker-bar">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+
+  <header>
+    <div class="wrap nav">
+      <a href="index.html" class="logo"><span class="logo-mark"></span> FLOX 1</a>
+      <nav class="nav-links">
+        <a href="index.html">الرئيسية</a>
+        <a href="subscriptions.html" class="active">الاشتراكات</a>
+        <a href="packages.html">الباقات والاستثمار</a>
+        <a href="profile.html">الملف الشخصي</a>
+      </nav>
+      <a href="#plans" class="nav-cta">اختر خطتك</a>
+    </div>
+  </header>
+
+  <div class="page-head">
+    <div class="wrap">
+      <div class="crumb"><a href="index.html">الرئيسية</a> / الاشتراكات</div>
+      <h1>خطط تناسب حجم رأس مالك</h1>
+      <p>ابدأ مجانًا بأدوات المسح الأساسية، وارتقِ عندما تحتاج معايير وسرعة وتنبيهات أكبر. يمكنك تغيير خطتك أو إلغاءها في أي وقت.</p>
+    </div>
+  </div>
+
+  <section id="plans">
+    <div class="wrap">
+      <div class="pricing">
+        <div class="price-card">
+          <div class="price-tier">مجاني</div>
+          <div class="price-amount">٠<span> د.ك / شهريًا</span></div>
+          <ul class="price-list">
+            <li>مسح ١٠٠ عملة</li>
+            <li>نموذج كمي واحد</li>
+            <li>تنبيهات داخل التطبيق</li>
+          </ul>
+          <a href="profile.html" class="price-btn">ابدأ مجانًا</a>
+        </div>
+        <div class="price-card featured">
+          <div class="price-tier">احترافي</div>
+          <div class="price-amount">٢٩<span> د.ك / شهريًا</span></div>
+          <ul class="price-list">
+            <li>مسح كامل السوق</li>
+            <li>١٢ نموذجًا كميًا</li>
+            <li>تنبيهات تيليجرام وwebhook</li>
+            <li>اختبار رجعي غير محدود</li>
+          </ul>
+          <a href="profile.html" class="price-btn">اشترك الآن</a>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">مؤسسات</div>
+          <div class="price-amount">مخصص</div>
+          <ul class="price-list">
+            <li>وصول كامل للـ API</li>
+            <li>نماذج مخصصة</li>
+            <li>دعم مباشر مخصص</li>
+          </ul>
+          <a href="index.html#support" class="price-btn">تواصل معنا</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="compare">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>مقارنة تفصيلية</h2>
+        <p>كل ما تحتاج معرفته قبل الاختيار.</p>
+      </div>
+      <div class="compare-wrap">
+        <table class="compare">
+          <thead>
+            <tr>
+              <th>الميزة</th>
+              <th>مجاني</th>
+              <th class="featured">احترافي</th>
+              <th>مؤسسات</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>عدد العملات الممسوحة</td>
+              <td>١٠٠</td>
+              <td>كامل السوق (+٤٬٢٠٠)</td>
+              <td>كامل السوق (+٤٬٢٠٠)</td>
+            </tr>
+            <tr>
+              <td>النماذج الكمية النشطة</td>
+              <td>١</td>
+              <td>١٢</td>
+              <td>مخصصة بلا حد</td>
+            </tr>
+            <tr>
+              <td>الاختبار الرجعي</td>
+              <td class="no">—</td>
+              <td class="yes">غير محدود</td>
+              <td class="yes">غير محدود</td>
+            </tr>
+            <tr>
+              <td>تنبيهات تيليجرام / webhook</td>
+              <td class="no">—</td>
+              <td class="yes">نعم</td>
+              <td class="yes">نعم</td>
+            </tr>
+            <tr>
+              <td>وصول API</td>
+              <td class="no">—</td>
+              <td class="no">—</td>
+              <td class="yes">كامل</td>
+            </tr>
+            <tr>
+              <td>الدعم</td>
+              <td>مجتمعي</td>
+              <td>أولوية عبر الدردشة</td>
+              <td>مدير حساب مخصص</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="sub-faq">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>أسئلة شائعة عن الاشتراك</h2>
+      </div>
+      <div class="faq">
+        <details class="faq-item" open>
+          <summary>هل يمكنني إلغاء اشتراكي في أي وقت؟</summary>
+          <p class="faq-a">نعم، يمكنك الإلغاء من الملف الشخصي في أي لحظة، وستبقى الخطة فعّالة حتى نهاية الفترة المدفوعة.</p>
+        </details>
+        <details class="faq-item">
+          <summary>هل يمكنني الترقية من مجاني إلى احترافي مباشرة؟</summary>
+          <p class="faq-a">نعم، تتم الترقية فورًا وتُفعّل كل ميزات الخطة الاحترافية بمجرد إتمام الدفع.</p>
+        </details>
+        <details class="faq-item">
+          <summary>ما الفرق بين الاشتراكات وباقات الاستثمار؟</summary>
+          <p class="faq-a">الاشتراك يمنحك أدوات المسح والتنبيهات لتتخذ قراراتك بنفسك، بينما باقات الاستثمار تُدار نيابة عنك حسب مستوى مخاطرة تختاره. <a href="packages.html" style="color:var(--accent)">اطّلع على الباقات</a>.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <div class="wrap">
+      <h2>ابدأ بمسح السوق خلال دقيقتين</h2>
+      <p>بلا بطاقة ائتمان. أوقف اشتراكك في أي وقت.</p>
+      <a href="profile.html" class="btn-primary">أنشئ حسابك</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="logo"><span class="logo-mark"></span> FLOX 1</div>
+        <div class="footer-cols">
+          <div class="footer-col">
+            <h4>المنتج</h4>
+            <a href="index.html#features">المميزات</a>
+            <a href="index.html#market">السوق المباشر</a>
+            <a href="subscriptions.html">الاشتراكات</a>
+            <a href="packages.html">الباقات والاستثمار</a>
+          </div>
+          <div class="footer-col">
+            <h4>الحساب</h4>
+            <a href="profile.html">الملف الشخصي</a>
+            <a href="index.html#payments">الإيداع والسحب</a>
+            <a href="index.html#support">الدعم</a>
+          </div>
+          <div class="footer-col">
+            <h4>قانوني</h4>
+            <a href="#">الشروط والأحكام</a>
+            <a href="#">سياسة الخصوصية</a>
+          </div>
+        </div>
+      </div>
+      <p class="disclaimer">تداول العملات الرقمية والاستثمار فيها ينطويان على مخاطر عالية وقد يؤديان إلى خسارة رأس المال بالكامل. الإشارات والباقات والنماذج المعروضة في FLOX 1 لأغراض تعليمية وتحليلية فقط، ولا تُعد نصيحة استثمارية أو توصية بالشراء أو البيع. الأداء السابق لأي نموذج أو باقة لا يضمن نتائج مماثلة في المستقبل.</p>
+      <p class="footer-bottom">© 2026 FLOX 1. جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
+
+<script src="ticker.js"></script>
+</body>
+</html>

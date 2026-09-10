@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الملف الشخصي — FLOX 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="ticker-bar">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+
+  <header>
+    <div class="wrap nav">
+      <a href="index.html" class="logo"><span class="logo-mark"></span> FLOX 1</a>
+      <nav class="nav-links">
+        <a href="index.html">الرئيسية</a>
+        <a href="subscriptions.html">الاشتراكات</a>
+        <a href="packages.html">الباقات والاستثمار</a>
+        <a href="profile.html" class="active">الملف الشخصي</a>
+      </nav>
+      <a href="index.html#payments" class="nav-cta">إيداع</a>
+    </div>
+  </header>
+
+  <div class="page-head">
+    <div class="wrap">
+      <div class="crumb"><a href="index.html">الرئيسية</a> / الملف الشخصي</div>
+      <h1 id="pageTitle">الملف الشخصي</h1>
+      <p id="pageSub">أنشئ حسابك لعرض رصيدك، رابط الإحالة الخاص بك، وسجل معاملاتك.</p>
+    </div>
+  </div>
+
+  <section style="padding-top:52px;">
+    <div class="wrap">
+
+      <div id="loadingState" style="color:var(--text-muted); font-size:14px;">جارٍ تحميل حسابك…</div>
+
+      <div id="signupGate" style="display:none; max-width:440px;">
+        <div class="referral-box" style="flex-direction:column; align-items:stretch; gap:14px; display:flex;">
+          <div>
+            <label style="display:block; font-size:12.5px; color:var(--text-muted); margin-bottom:6px;">البريد الإلكتروني أو رقم الهاتف</label>
+            <input id="suIdentifier" type="text" placeholder="name@example.com أو 05XXXXXXXX" style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); padding:11px 14px; color:var(--text); font-family:'IBM Plex Mono', monospace; font-size:14px;">
+          </div>
+          <div>
+            <label style="display:block; font-size:12.5px; color:var(--text-muted); margin-bottom:6px;">كلمة السر</label>
+            <input id="suPassword" type="password" placeholder="••••••••" style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); padding:11px 14px; color:var(--text); font-family:'IBM Plex Mono', monospace; font-size:14px;">
+            <p style="font-size:11.5px; color:var(--text-muted); margin-top:5px;">٨ أحرف على الأقل، تتضمن حرفًا كبيرًا ورقمًا</p>
+          </div>
+          <div>
+            <label style="display:block; font-size:12.5px; color:var(--text-muted); margin-bottom:6px;">إعادة كلمة السر</label>
+            <input id="suPasswordConfirm" type="password" placeholder="••••••••" style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); padding:11px 14px; color:var(--text); font-family:'IBM Plex Mono', monospace; font-size:14px;">
+          </div>
+          <div>
+            <label style="display:block; font-size:12.5px; color:var(--text-muted); margin-bottom:6px;">كود الدعوة (اختياري)</label>
+            <input id="suInviteCode" type="text" placeholder="مثال: ahmed-9f21" style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); padding:11px 14px; color:var(--text); font-family:'IBM Plex Mono', monospace; font-size:14px;">
+          </div>
+          <div id="suError" style="display:none; font-size:13px; color:var(--down);"></div>
+          <button onclick="createAccount()" class="btn-primary" style="border:1px solid var(--accent); cursor:pointer;">إنشاء الحساب والحصول على رابط الإحالة</button>
+          <p style="font-size:12px; color:var(--text-muted);">سيتم إنشاء رابط إحالة فريد تلقائيًا وربطه بحسابك بمجرد التسجيل.</p>
+        </div>
+      </div>
+
+      <div id="profileContent" style="display:none;">
+      <div class="profile-shell">
+
+        <aside class="profile-side">
+          <div class="profile-id">
+            <div class="profile-avatar" id="pAvatar">--</div>
+            <div class="p-name" id="pName">—</div>
+            <div class="p-tier">الخطة الاحترافية</div>
+          </div>
+          <nav class="profile-menu">
+            <a href="#overview" class="active">نظرة عامة</a>
+            <a href="#wallet">المحفظة والمعاملات</a>
+            <a href="#rewards">المكافآت والعجلة</a>
+            <a href="#referral">الإحالة والفريق</a>
+            <a href="#subscription">الاشتراك والباقات</a>
+            <a href="#security">الأمان</a>
+          </nav>
+        </aside>
+
+        <div class="profile-main">
+
+          <div class="profile-section" id="overview">
+            <h2>المعلومات الشخصية</h2>
+            <div class="info-grid">
+              <div class="info-field">
+                <label>الاسم الكامل</label>
+                <span id="infoName">—</span>
+              </div>
+              <div class="info-field">
+                <label>البريد الإلكتروني / رقم الهاتف</label>
+                <span id="infoEmail">—</span>
+              </div>
+              <div class="info-field">
+                <label>تاريخ الانضمام</label>
+                <span id="infoJoined">—</span>
+              </div>
+              <div class="info-field">
+                <label>حالة التوثيق (KYC)</label>
+                <span class="kyc-badge"><span class="kyc-dot"></span> موثّق</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-section" id="wallet">
+            <h2>الرصيد</h2>
+            <div class="balance-cards">
+              <div class="balance-card">
+                <div class="b-label">الرصيد المتاح</div>
+                <div class="b-val">١٬٢٤٠ د.ك</div>
+              </div>
+              <div class="balance-card">
+                <div class="b-label">إجمالي الإيداعات</div>
+                <div class="b-val">٣٬٥٠٠ د.ك</div>
+              </div>
+              <div class="balance-card">
+                <div class="b-label">إجمالي السحوبات</div>
+                <div class="b-val">٩٠٠ د.ك</div>
+              </div>
+            </div>
+
+            <div class="level1-gate">
+              <div>
+                <div style="font-size:14px; font-weight:600;" id="level1Status">المستوى الأول: غير مُفعّل</div>
+                <div style="font-size:12.5px; color:var(--text-muted); margin-top:4px;">رصيد المكافآت يعمل بالمسح الكمي، لكن لا يمكن سحب أي أرباح حتى يُفعَّل المستوى الأول بإيداع حقيقي (١٠$ فأكثر).</div>
+              </div>
+              <button class="btn-small" id="activateBtn" onclick="activateLevel1()">تفعيل المستوى الأول</button>
+            </div>
+          </div>
+
+          <div class="profile-section" id="rewards">
+            <h2>المكافآت والعجلة</h2>
+
+            <div class="bonus-box">
+              <div>
+                <div class="b-amt" id="bonusAmt">٠$</div>
+                <div class="b-note">رصيد المكافآت — يُستخدم للمسح الكمي فقط حتى تفعيل المستوى الأول</div>
+              </div>
+            </div>
+
+            <!-- Daily check-in -->
+            <div class="checkin-wrap" style="margin-top:32px;">
+              <div class="checkin-dial">
+                <button class="checkin-core" id="dailyBtn" onclick="claimDaily()">تحقق فيه</button>
+              </div>
+              <div class="checkin-meta">
+                <div>تسجيل الوصول اليومي <b>٠٫٢$</b></div>
+                <div>إجمالي المُستلم من الوصول <b id="dailyTotal">٠$</b></div>
+              </div>
+
+              <div class="checkin-cal">
+                <div class="checkin-cal-head">
+                  <span>الشهر القادم ‹</span>
+                  <span id="calMonthLabel">—</span>
+                  <span>› الشهر الماضي</span>
+                </div>
+                <div class="checkin-streak">تم تسجيل الوصول <b id="streakCount">٠</b> يوم على التوالي</div>
+                <div class="checkin-grid" id="checkinGrid"></div>
+              </div>
+            </div>
+
+            <!-- Invite / lucky wheel -->
+            <div class="invite-banner" style="margin-top:44px;">
+              <h3>ادعُ الأصدقاء لكسب مكافأة</h3>
+              <p>ادعُ صديقًا ليبدأ الإيداع، وستحصل على دورة إضافية في عجلة الحظ.</p>
+              <div class="spins-pill">
+                <span>الدورات المتاحة</span>
+                <span id="spinsLeft" class="mono">٠</span>
+              </div>
+            </div>
+
+            <div class="wheel-area" style="justify-content:center; margin-top:28px;">
+              <div class="wheel-wrap">
+                <div class="wheel-pointer"></div>
+                <div class="wheel-disc" id="wheelDisc"></div>
+                <div class="wheel-hub"></div>
+              </div>
+              <div class="wheel-meta">
+                <p>كل دورة تمنحك مبلغًا معروضًا حتى ١٠٠$، لكن المبلغ الفعلي الذي يُضاف لرصيدك محدود بحد أقصى ١٠$. دورة مجانية عند التسجيل، ودورة إضافية عن كل صديق يبدأ الإيداع.</p>
+                <button class="btn-small" id="spinBtn" onclick="spinWheel()">تدوير العجلة</button>
+                <div class="spin-result" id="spinResult"></div>
+              </div>
+            </div>
+
+            <table class="spin-hist" id="spinHistTable" style="display:none;">
+              <thead>
+                <tr><th>الجولة</th><th>الوقت</th><th>المقدار</th></tr>
+              </thead>
+              <tbody id="spinHistBody"></tbody>
+            </table>
+          </div>
+
+          <div class="profile-section">
+            <h2>سجل المعاملات</h2>
+            <table class="hist-table">
+              <thead>
+                <tr>
+                  <th>النوع</th>
+                  <th>الطريقة</th>
+                  <th>المبلغ</th>
+                  <th>التاريخ</th>
+                  <th>الحالة</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="type-cell">إيداع</td>
+                  <td>USDT (TRC20)</td>
+                  <td>٥٠٠ د.ك</td>
+                  <td>٠٥ سبتمبر ٢٠٢٦</td>
+                  <td><span class="status-pill done">مكتمل</span></td>
+                </tr>
+                <tr>
+                  <td class="type-cell">سحب</td>
+                  <td>تحويل بنكي (دينار جزائري)</td>
+                  <td>٢٠٠ د.ك</td>
+                  <td>٠٢ سبتمبر ٢٠٢٦</td>
+                  <td><span class="status-pill done">مكتمل</span></td>
+                </tr>
+                <tr>
+                  <td class="type-cell">إيداع</td>
+                  <td>بطاقة ائتمان</td>
+                  <td>٣٠٠ د.ك</td>
+                  <td>٢٩ أغسطس ٢٠٢٦</td>
+                  <td><span class="status-pill done">مكتمل</span></td>
+                </tr>
+                <tr>
+                  <td class="type-cell">سحب</td>
+                  <td>تحويل بنكي (دولار أمريكي)</td>
+                  <td>١٥٠ د.ك</td>
+                  <td>٢٤ أغسطس ٢٠٢٦</td>
+                  <td><span class="status-pill pending">قيد المراجعة</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="profile-section" id="referral">
+            <h2>الإحالة والفريق</h2>
+            <div class="referral-box">
+              <span class="referral-link" id="refLink">—</span>
+              <button class="copy-btn" id="copyBtn" onclick="copyReferral()">نسخ الرابط</button>
+            </div>
+            <p id="referredByNote" class="note-inline" style="display:none;"></p>
+
+            <div class="level-grid">
+              <div class="level-card l1">
+                <div class="lvl-num">المستوى الأول</div>
+                <div class="lvl-pct">١٠٪</div>
+                <div class="lvl-desc">من يدعوهم مباشرة</div>
+              </div>
+              <div class="level-card">
+                <div class="lvl-num">المستوى الثاني</div>
+                <div class="lvl-pct">٤٪</div>
+                <div class="lvl-desc">من يدعوهم أعضاء مستواك الأول</div>
+              </div>
+              <div class="level-card">
+                <div class="lvl-num">المستوى الثالث</div>
+                <div class="lvl-pct">١٪</div>
+                <div class="lvl-desc">من يدعوهم أعضاء مستواك الثاني</div>
+              </div>
+            </div>
+            <p class="note-inline" style="margin-top:16px;">العمولة نسبة من أرباح الفريق الناتجة عن التداول والاستثمار الفعلي، وليست عمولة على مبالغ الإيداع.</p>
+
+            <div class="level-progress">
+              <div class="lp-item" id="lp2">فتح المستوى الثاني (الإيداع): <b>٠ / ٢</b> دعوات مباشرة</div>
+              <div class="lp-item" id="lp3">فتح المستوى الثالث (الإيداع): <b>٠ / ٥</b> دعوات مباشرة</div>
+            </div>
+            <p class="note-inline" style="margin-top:10px;">مستويات الإيداع الثاني والثالث في <a href="packages.html" style="color:var(--accent)">صفحة الباقات</a> تُفتح تلقائيًا بمجرد وصول عدد المدعوين المباشرين (المستوى الأول أعلاه) للعدد المطلوب.</p>
+
+            <div class="balance-cards" style="margin-top:24px;">
+              <div class="balance-card">
+                <div class="b-label">أعضاء الفريق</div>
+                <div class="b-val" id="teamCount">٠</div>
+              </div>
+              <div class="balance-card">
+                <div class="b-label">إجمالي عمولات الإحالة</div>
+                <div class="b-val" id="teamCommission">٠ د.ك</div>
+              </div>
+              <div class="balance-card">
+                <div class="b-label">عمولات هذا الشهر</div>
+                <div class="b-val">٠ د.ك</div>
+              </div>
+            </div>
+
+            <table class="hist-table" style="margin-top:24px;">
+              <thead>
+                <tr>
+                  <th>العضو</th>
+                  <th>المستوى</th>
+                  <th>تاريخ الانضمام</th>
+                  <th>عمولتك</th>
+                </tr>
+              </thead>
+              <tbody id="teamBody">
+                <tr><td colspan="4" style="color:var(--text-muted); font-family:'IBM Plex Sans Arabic',sans-serif;">لا يوجد أعضاء في فريقك بعد — شارك رابط الإحالة أعلاه لبدء بناء فريقك.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="profile-section" id="subscription">
+            <h2>الاشتراك والباقات</h2>
+            <div class="info-grid">
+              <div class="info-field">
+                <label>الخطة الحالية</label>
+                <span>احترافي — ٢٩ د.ك / شهريًا</span>
+              </div>
+              <div class="info-field">
+                <label>باقة الاستثمار النشطة</label>
+                <span>باقة النمو (مخاطرة متوسطة)</span>
+              </div>
+            </div>
+            <div style="display:flex; gap:14px; margin-top:20px; flex-wrap:wrap;">
+              <a href="subscriptions.html" class="btn-secondary">إدارة الاشتراك</a>
+              <a href="packages.html" class="btn-secondary">إدارة باقة الاستثمار</a>
+            </div>
+          </div>
+
+          <div class="profile-section" id="security" style="margin-bottom:0;">
+            <h2>الأمان</h2>
+            <div class="info-grid">
+              <div class="info-field">
+                <label>التحقق بخطوتين (2FA)</label>
+                <span class="kyc-badge"><span class="kyc-dot"></span> مفعّل</span>
+              </div>
+              <div class="info-field">
+                <label>آخر تسجيل دخول</label>
+                <span>اليوم، ٠٩:٤٢ صباحًا</span>
+              </div>
+            </div>
+            <a href="#" onclick="resetDemo(); return false;" style="display:inline-block; margin-top:20px; font-size:12.5px; color:var(--text-muted);">إعادة تعيين الحساب التجريبي</a>
+          </div>
+
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="margin-top:60px;">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="logo"><span class="logo-mark"></span> FLOX 1</div>
+        <div class="footer-cols">
+          <div class="footer-col">
+            <h4>المنتج</h4>
+            <a href="index.html#features">المميزات</a>
+            <a href="index.html#market">السوق المباشر</a>
+            <a href="subscriptions.html">الاشتراكات</a>
+            <a href="packages.html">الباقات والاستثمار</a>
+          </div>
+          <div class="footer-col">
+            <h4>الحساب</h4>
+            <a href="profile.html">الملف الشخصي</a>
+            <a href="index.html#payments">الإيداع والسحب</a>
+            <a href="index.html#support">الدعم</a>
+          </div>
+          <div class="footer-col">
+            <h4>قانوني</h4>
+            <a href="#">الشروط والأحكام</a>
+            <a href="#">سياسة الخصوصية</a>
+          </div>
+        </div>
+      </div>
+      <p class="disclaimer">تداول العملات الرقمية والاستثمار فيها ينطويان على مخاطر عالية وقد يؤديان إلى خسارة رأس المال بالكامل. الإشارات والباقات والنماذج المعروضة في FLOX 1 لأغراض تعليمية وتحليلية فقط، ولا تُعد نصيحة استثمارية أو توصية بالشراء أو البيع. الأداء السابق لأي نموذج أو باقة لا يضمن نتائج مماثلة في المستقبل.</p>
+      <p class="footer-bottom">© 2026 FLOX 1. جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
+
+<script src="ticker.js"></script>
+<script>
+  const arabicDigits = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  function toArabicNum(n){ return String(n).replace(/[0-9]/g, d => arabicDigits[d]); }
+
+  function slugify(email, name){
+    const base = (email || name || 'user').split('@')[0]
+      .toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 10) || 'user';
+    const suffix = Math.random().toString(16).slice(2, 6);
+    return `${base}-${suffix}`;
+  }
+
+  function initials(name){
+    const parts = name.trim().split(/\s+/);
+    return ((parts[0]?.[0] || '') + (parts[1]?.[0] || '')).toUpperCase() || '--';
+  }
+
+  function getRefParam(){
+    return new URLSearchParams(window.location.search).get('ref');
+  }
+
+  let currentProfile = null;
+  let currentPendingSpins = 0;
+  let wheelRotationTotal = 0;
+  const WHEEL_SEGMENTS = [10, 20, 30, 50, 100, 0];
+  const WHEEL_LABELS = { 0: 'شكرًا' };
+  const SEG_ANGLE = 360 / WHEEL_SEGMENTS.length;
+  const WHEEL_CAP = 10;
+  const DAY_MS = 24*60*60*1000;
+
+  function fmt(n){
+    const num = Math.round((n || 0)*100)/100;
+    return toArabicNum(num.toString());
+  }
+  function todayKey(){
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+
+  async function getPendingSpins(code){
+    try{
+      const res = await window.storage.get(`spins:${code}`, true);
+      if(res) return JSON.parse(res.value).count || 0;
+    }catch(e){ /* none yet */ }
+    return 0;
+  }
+  async function incPendingSpins(code, delta){
+    const count = Math.max(0, (await getPendingSpins(code)) + delta);
+    await window.storage.set(`spins:${code}`, JSON.stringify({count}), true);
+    return count;
+  }
+
+  function showSuError(msg){
+    const el = document.getElementById('suError');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+  function clearSuError(){
+    document.getElementById('suError').style.display = 'none';
+  }
+  function isEmailLike(v){ return v.includes('@'); }
+  function deriveDisplayName(identifier){
+    if(isEmailLike(identifier)) return identifier.split('@')[0];
+    const digits = identifier.replace(/\D/g, '');
+    if(digits.length >= 5) return digits.slice(0,3) + '***' + digits.slice(-2);
+    return identifier;
+  }
+
+  async function createAccount(){
+    clearSuError();
+    const identifier = document.getElementById('suIdentifier').value.trim();
+    const password = document.getElementById('suPassword').value;
+    const passwordConfirm = document.getElementById('suPasswordConfirm').value;
+    const inviteCode = document.getElementById('suInviteCode').value.trim();
+
+    if(!identifier){
+      showSuError('يرجى إدخال البريد الإلكتروني أو رقم الهاتف');
+      return;
+    }
+    if(password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)){
+      showSuError('كلمة السر يجب أن تتكون من ٨ أحرف على الأقل، وتتضمن حرفًا كبيرًا ورقمًا');
+      return;
+    }
+    if(password !== passwordConfirm){
+      showSuError('كلمة السر وإعادة كلمة السر غير متطابقتين');
+      return;
+    }
+
+    const name = deriveDisplayName(identifier);
+    const code = slugify(identifier, name);
+    const referredBy = inviteCode || getRefParam() || null;
+    const profile = {
+      name, identifier, code, referredBy, joinedAt: new Date().toISOString(),
+      bonusBalance: 10, level1Active: false, dailyClaims: [], spinHistory: []
+      // Note: the password itself is intentionally not stored here — a real
+      // deployment must authenticate against a proper backend, never the browser.
+    };
+
+    try{
+      await window.storage.set('profile', JSON.stringify(profile), false);
+      await window.storage.set(`user:${code}`, JSON.stringify({ name, referredBy }), true);
+      await incPendingSpins(code, 1); // free spin at registration
+
+      if(referredBy){
+        await addToTeam(referredBy, { name, level: 1, joinedAt: profile.joinedAt });
+        try{
+          const parentRaw = await window.storage.get(`user:${referredBy}`, true);
+          const parent = parentRaw ? JSON.parse(parentRaw.value) : null;
+          if(parent && parent.referredBy){
+            await addToTeam(parent.referredBy, { name, level: 2, joinedAt: profile.joinedAt });
+            const grandRaw = await window.storage.get(`user:${parent.referredBy}`, true);
+            const grand = grandRaw ? JSON.parse(grandRaw.value) : null;
+            if(grand && grand.referredBy){
+              await addToTeam(grand.referredBy, { name, level: 3, joinedAt: profile.joinedAt });
+            }
+          }
+        }catch(e){ /* referrer chain incomplete — ignore */ }
+      }
+    }catch(e){
+      console.error('تعذّر إنشاء الحساب', e);
+      showSuError('حدث خطأ أثناء إنشاء الحساب، حاول مجددًا.');
+      return;
+    }
+    renderProfile(profile);
+  }
+
+  async function addToTeam(ownerCode, member){
+    let list = [];
+    try{
+      const existing = await window.storage.get(`team:${ownerCode}`, true);
+      if(existing) list = JSON.parse(existing.value);
+    }catch(e){ list = []; }
+    list.push(member);
+    await window.storage.set(`team:${ownerCode}`, JSON.stringify(list), true);
+  }
+
+  const levelPct = { 1: 10, 2: 4, 3: 1 };
+  const levelLabel = { 1: 'الأول — ١٠٪', 2: 'الثاني — ٤٪', 3: 'الثالث — ١٪' };
+
+  function buildWheel(){
+    const disc = document.getElementById('wheelDisc');
+    if(disc.dataset.built) return;
+    WHEEL_SEGMENTS.forEach((val, i)=>{
+      const angle = i*SEG_ANGLE + SEG_ANGLE/2;
+      const seg = document.createElement('div');
+      seg.className = 'seg-label';
+      seg.style.transform = `translateX(-50%) rotate(${angle}deg)`;
+      const label = WHEEL_LABELS[val] || `${toArabicNum(val)}$`;
+      seg.innerHTML = `<span>${label}</span>`;
+      disc.appendChild(seg);
+    });
+    disc.dataset.built = '1';
+  }
+
+  function currentStreak(claims){
+    const set = new Set(claims);
+    let streak = 0;
+    let d = new Date();
+    // if today not claimed yet, count backwards from yesterday
+    if(!set.has(todayKey())) d.setDate(d.getDate()-1);
+    while(true){
+      const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      if(set.has(key)){ streak++; d.setDate(d.getDate()-1); } else break;
+    }
+    return streak;
+  }
+
+  function renderCheckin(){
+    const claims = currentProfile.dailyClaims || [];
+    const claimedToday = claims.includes(todayKey());
+    const btn = document.getElementById('dailyBtn');
+    btn.disabled = claimedToday;
+    btn.textContent = claimedToday ? 'تم اليوم ✓' : 'تحقق فيه';
+
+    document.getElementById('dailyTotal').textContent = fmt(claims.length * 0.2) + '$';
+    document.getElementById('streakCount').textContent = toArabicNum(currentStreak(claims));
+
+    const now = new Date();
+    const monthNames = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+    document.getElementById('calMonthLabel').textContent = `${monthNames[now.getMonth()]} ${toArabicNum(now.getFullYear())}`;
+
+    const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+    const grid = document.getElementById('checkinGrid');
+    let html = '';
+    for(let day=1; day<=daysInMonth; day++){
+      const key = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+      const isClaimed = claims.includes(key);
+      const isToday = day === now.getDate();
+      html += `<div class="checkin-day ${isClaimed?'claimed':''} ${isToday?'today':''}">${isClaimed?'✓':toArabicNum(day)}</div>`;
+    }
+    grid.innerHTML = html;
+  }
+
+  async function claimDaily(){
+    if(!currentProfile) return;
+    if(!currentProfile.dailyClaims) currentProfile.dailyClaims = [];
+    if(currentProfile.dailyClaims.includes(todayKey())) return;
+    currentProfile.dailyClaims.push(todayKey());
+    currentProfile.bonusBalance = (currentProfile.bonusBalance || 0) + 0.2;
+    try{ await window.storage.set('profile', JSON.stringify(currentProfile), false); }catch(e){}
+    document.getElementById('bonusAmt').textContent = fmt(currentProfile.bonusBalance) + '$';
+    renderCheckin();
+  }
+
+  async function activateLevel1(){
+    if(!currentProfile || currentProfile.level1Active) return;
+    const ok = confirm('في هذه النسخة التجريبية، هذا الزر يحاكي إيداعًا حقيقيًا بقيمة ١٠$ فأكثر لتفعيل المستوى الأول. متابعة؟');
+    if(!ok) return;
+    currentProfile.level1Active = true;
+    try{
+      await window.storage.set('profile', JSON.stringify(currentProfile), false);
+      if(currentProfile.referredBy){
+        await incPendingSpins(currentProfile.referredBy, 1); // reward the referrer with a spin
+      }
+    }catch(e){}
+    document.getElementById('level1Status').textContent = 'المستوى الأول: مُفعّل ✓';
+    const btn = document.getElementById('activateBtn');
+    btn.disabled = true;
+    btn.textContent = 'مُفعّل';
+  }
+
+  function spinTargetAngle(prevTotal, segCenter){
+    const desiredMod = (360 - segCenter) % 360;
+    const prevMod = ((prevTotal % 360) + 360) % 360;
+    let delta = desiredMod - prevMod;
+    if(delta <= 0) delta += 360;
+    return prevTotal + delta + 5*360;
+  }
+
+  function renderSpinHistory(){
+    const hist = currentProfile.spinHistory || [];
+    const table = document.getElementById('spinHistTable');
+    const body = document.getElementById('spinHistBody');
+    if(hist.length === 0){ table.style.display = 'none'; return; }
+    table.style.display = 'table';
+    body.innerHTML = hist.slice().reverse().slice(0,8).map((h,i) => `
+      <tr>
+        <td class="type-cell">#${toArabicNum(hist.length - i)}</td>
+        <td>${new Date(h.time).toLocaleString('ar-EG', {hour:'2-digit', minute:'2-digit', day:'2-digit', month:'2-digit'})}</td>
+        <td style="color:${h.awarded>0?'var(--up)':'var(--text-muted)'}">${h.awarded>0 ? '+'+toArabicNum(h.awarded)+'$' : 'بلا مكافأة'}</td>
+      </tr>
+    `).join('');
+  }
+
+  async function spinWheel(){
+    if(!currentProfile) return;
+    const spinBtn = document.getElementById('spinBtn');
+    const resultEl = document.getElementById('spinResult');
+    if(currentPendingSpins <= 0){
+      resultEl.textContent = 'لا توجد دورات متاحة حاليًا — ادعُ صديقًا أو انتظر دورتك القادمة.';
+      return;
+    }
+    spinBtn.disabled = true;
+    resultEl.textContent = '';
+    const idx = Math.floor(Math.random() * WHEEL_SEGMENTS.length);
+    const prize = WHEEL_SEGMENTS[idx];
+    const awarded = Math.min(prize, WHEEL_CAP);
+    const segCenter = idx*SEG_ANGLE + SEG_ANGLE/2;
+    wheelRotationTotal = spinTargetAngle(wheelRotationTotal, segCenter);
+    document.getElementById('wheelDisc').style.transform = `rotate(${wheelRotationTotal}deg)`;
+
+    setTimeout(async ()=>{
+      currentProfile.bonusBalance = (currentProfile.bonusBalance || 0) + awarded;
+      if(!currentProfile.spinHistory) currentProfile.spinHistory = [];
+      currentProfile.spinHistory.push({ prize, awarded, time: new Date().toISOString() });
+      try{ await window.storage.set('profile', JSON.stringify(currentProfile), false); }catch(e){}
+      try{ currentPendingSpins = await incPendingSpins(currentProfile.code, -1); }catch(e){ currentPendingSpins = Math.max(0, currentPendingSpins-1); }
+      document.getElementById('bonusAmt').textContent = fmt(currentProfile.bonusBalance) + '$';
+      document.getElementById('spinsLeft').textContent = toArabicNum(currentPendingSpins);
+      resultEl.textContent = awarded > 0
+        ? `فزت بـ ${toArabicNum(prize)}$ من العجلة — أُضيف ${toArabicNum(awarded)}$ إلى رصيد مكافآتك (الحد الأقصى ١٠$ لكل دورة).`
+        : 'لم تفز هذه المرة — جرّب دورتك القادمة.';
+      spinBtn.disabled = currentPendingSpins <= 0;
+      renderSpinHistory();
+    }, 3700);
+  }
+
+  async function renderProfile(profile){
+    currentProfile = profile;
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('signupGate').style.display = 'none';
+    document.getElementById('profileContent').style.display = 'block';
+
+    document.getElementById('pageTitle').textContent = `مرحبًا، ${profile.name.split(' ')[0]}`;
+    document.getElementById('pageSub').textContent = 'هذه نظرة عامة على حسابك — الرصيد، رابط الإحالة، وسجل معاملاتك.';
+    document.getElementById('pAvatar').textContent = initials(profile.name);
+    document.getElementById('pName').textContent = profile.name;
+    document.getElementById('infoName').textContent = profile.name;
+    document.getElementById('infoEmail').textContent = profile.identifier || profile.email || '—';
+    document.getElementById('infoJoined').textContent = new Date(profile.joinedAt).toLocaleDateString('ar-EG', {year:'numeric', month:'long', day:'numeric'});
+
+    const link = `flox1.app/r/${profile.code}`;
+    document.getElementById('refLink').textContent = link;
+
+    if(profile.referredBy){
+      const note = document.getElementById('referredByNote');
+      note.style.display = 'block';
+      note.textContent = `انضممت عبر إحالة من الرمز: ${profile.referredBy}`;
+    }
+
+    // Level 1 activation state
+    document.getElementById('level1Status').textContent = profile.level1Active ? 'المستوى الأول: مُفعّل ✓' : 'المستوى الأول: غير مُفعّل';
+    const actBtn = document.getElementById('activateBtn');
+    actBtn.disabled = !!profile.level1Active;
+    actBtn.textContent = profile.level1Active ? 'مُفعّل' : 'تفعيل المستوى الأول';
+
+    // Bonus + daily + wheel
+    document.getElementById('bonusAmt').textContent = fmt(profile.bonusBalance) + '$';
+    renderCheckin();
+    buildWheel();
+    currentPendingSpins = await getPendingSpins(profile.code);
+    document.getElementById('spinsLeft').textContent = toArabicNum(currentPendingSpins);
+    document.getElementById('spinBtn').disabled = currentPendingSpins <= 0;
+    renderSpinHistory();
+
+    // Team + level-unlock progress
+    let team = [];
+    try{
+      const res = await window.storage.get(`team:${profile.code}`, true);
+      if(res) team = JSON.parse(res.value);
+    }catch(e){ team = []; }
+
+    const level1Count = team.filter(m => m.level === 1).length;
+    const lp2 = document.getElementById('lp2');
+    const lp3 = document.getElementById('lp3');
+    lp2.innerHTML = `فتح المستوى الثاني (الإيداع): <b>${toArabicNum(level1Count)} / ٢</b> دعوات مباشرة`;
+    lp3.innerHTML = `فتح المستوى الثالث (الإيداع): <b>${toArabicNum(level1Count)} / ٥</b> دعوات مباشرة`;
+    lp2.classList.toggle('done', level1Count >= 2);
+    lp3.classList.toggle('done', level1Count >= 5);
+
+    document.getElementById('teamCount').textContent = toArabicNum(team.length);
+    document.getElementById('teamCommission').textContent = 'بانتظار أرباح التداول';
+
+    const body = document.getElementById('teamBody');
+    if(team.length === 0){
+      body.innerHTML = `<tr><td colspan="4" style="color:var(--text-muted); font-family:'IBM Plex Sans Arabic',sans-serif;">لا يوجد أعضاء في فريقك بعد — شارك رابط الإحالة أعلاه لبدء بناء فريقك.</td></tr>`;
+    } else {
+      body.innerHTML = team.map(m => `
+        <tr>
+          <td class="type-cell">${m.name}</td>
+          <td>${levelLabel[m.level] || m.level}</td>
+          <td>${new Date(m.joinedAt).toLocaleDateString('ar-EG')}</td>
+          <td>بانتظار أرباح التداول</td>
+        </tr>
+      `).join('');
+    }
+  }
+
+  async function resetDemo(){
+    if(!confirm('سيتم حذف بيانات حسابك التجريبي من هذا المتصفح. متابعة؟')) return;
+    try{ await window.storage.delete('profile', false); }catch(e){}
+    location.reload();
+  }
+
+  function copyReferral(){
+    const link = document.getElementById('refLink').textContent;
+    const btn = document.getElementById('copyBtn');
+    navigator.clipboard.writeText(link).then(()=>{
+      btn.textContent = 'تم النسخ';
+      btn.classList.add('copied');
+      setTimeout(()=>{ btn.textContent = 'نسخ الرابط'; btn.classList.remove('copied'); }, 1800);
+    }).catch(()=>{
+      btn.textContent = 'انسخ يدويًا: ' + link;
+    });
+  }
+
+  (async function init(){
+    const ref = getRefParam();
+    if(ref){
+      document.getElementById('suInviteCode').value = ref;
+    }
+    try{
+      const res = await window.storage.get('profile', false);
+      if(res){
+        renderProfile(JSON.parse(res.value));
+        return;
+      }
+    }catch(e){ /* no profile yet */ }
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('signupGate').style.display = 'block';
+  })();
+</script>
+</body>
+</html>
